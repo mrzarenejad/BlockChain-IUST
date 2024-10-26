@@ -1,0 +1,57 @@
+pragma solidity >= 0.7.0<0.9.0;
+contract charity{
+    address owner;
+    bool month;
+
+    constructor() payable public{
+        owner = msg.sender;
+        month = false;
+    }
+
+    modifier onlyowner{
+        require(msg.sender == owner);
+        _;
+    }
+
+    modifier mustBemonthly{
+        require(month == true);
+        _;
+    }
+
+    address payable[] welfarewallets;
+    address payable[] charitywallet;
+    address payable[] needywallets;
+    mapping(address => uint) fortune;
+    mapping(address => uint) wage;
+    mapping(address => uint) balance;
+
+    function getfortune(address payable wallet,uint amount) public {
+        welfarewallets.push(wallet);
+        fortune[wallet]=amount;
+    }
+    //get walfare addresses and their money to dedicate
+    function charityaccount(address payable wallet1) public onlyowner{
+        charitywallet.push(wallet1);
+        for(uint i=0;i<welfarewallets.length;i++){
+            balance[wallet1] += fortune[welfarewallets[i]];
+        }
+    }
+    //get charity address and transfer walfare account balance to charity balance
+    function getneedyaddress(address payable wallet2) public onlyowner{
+        needywallets.push(wallet2);
+    }
+    //get poor people wallet address
+    function paywage() private mustBemonthly{
+       
+        for(uint j=0;j<needywallets.length;j++){
+           wage[needywallets[j]]= balance[charitywallet[0]] / needywallets.length;
+        }
+    }
+    // pay salary to needy addresses monthly according to charity balance(i.e if 1 needy address register all of charity balance dedicate to it 
+    //if 2 needy address register all of charity balance dedicate to both of them eqally and so on)
+    function ismonthly() public onlyowner{
+        month=true;
+        paywage();
+    }
+    // pay if owner allow that monthly paying is coming
+}
