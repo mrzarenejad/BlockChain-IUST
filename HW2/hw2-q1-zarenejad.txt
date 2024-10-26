@@ -1,0 +1,13 @@
+pragma solidity ^0.8.17;
+contract storage1{
+    function add(uint a) public view returns(uint){
+        uint result=0;
+        result = a + 100;
+        return result;
+    }
+    function subtract(uint b) public view returns(uint){
+        uint result2=0;
+        result2= b - 10;
+        return result2;
+    }
+}

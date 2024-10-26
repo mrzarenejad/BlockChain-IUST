@@ -1,0 +1,18 @@
+pragma solidity ^0.8.17;
+contract timecheck{
+    uint256 lasttime;
+    function timestamp() public {
+        lasttime=block.timestamp;
+    }
+    function timechecking(uint256 a) public view returns(uint256){
+        uint256 hour= 1*60*60;
+        uint256 minute= 20*60;
+        uint256 second= 30;
+        if(a > lasttime){
+            return lasttime + hour + minute + second;
+        }
+        else{
+            return 0;
+        }
+    }
+}
